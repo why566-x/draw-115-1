@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>翠翠小精靈的奧術召喚陣 🌀 課堂召喚魔法器</title>
+    <style>
+        /* 奧術魔法陣 - 高科技奇幻配色 */
+        :root {
+            --bg-dark: #050714;
+            --panel-bg: rgba(12, 18, 38, 0.85);
+            --arcane-cyan: #00f3ff;
+            --arcane-cyan-glow: rgba(0, 243, 255, 0.5);
+            --arcane-purple: #bc13fe;
+            --arcane-purple-glow: rgba(188, 19, 254, 0.4);
+            --arcane-gold: #ffd700;
+            --arcane-gold-glow: rgba(255, 215, 0, 0.4);
+            --text-main: #e2f1ff;
+            --text-muted: #8ba2cb;
+            --scroll-bg: #f7eedb;
+            --scroll-text: #2a1a08;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Georgia", "PMingLiU", "Noto Serif TC", serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(188, 19, 254, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(0, 243, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(255, 215, 0, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.6rem;
+            color: var(--arcane-cyan);
+            text-shadow: 0 0 15px var(--arcane-cyan-glow), 0 0 30px rgba(0, 243, 255, 0.3);
+            letter-spacing: 3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 960px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 魔法面板 */
+        .magic-card {
+            background: var(--panel-bg);
+            border-radius: 16px;
+            border: 1.5px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.08);
+            padding: 25px;
+            position: relative;
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        .magic-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--arcane-purple), var(--arcane-cyan), var(--arcane-gold));
+        }
+
+        .magic-card h2 {
+            font-size: 1.5rem;
+            color: var(--arcane-cyan);
+            margin-bottom: 20px;
+            border-bottom: 1px dashed rgba(0, 243, 255, 0.3);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 8px var(--arcane-cyan-glow);
+        }
+
+        /* 班級傳送門(按鈕) */
+        .portal-zone {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .portal-btn {
+            background: rgba(10, 20, 45, 0.8);
+            color: var(--text-muted);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .portal-btn:hover {
+            border-color: var(--arcane-cyan);
+            color: var(--arcane-cyan);
+            box-shadow: 0 0 15px var(--arcane-cyan-glow);
+            transform: translateY(-2px);
+        }
+
+        .portal-btn.active {
+            background: linear-gradient(135deg, rgba(188, 19, 254, 0.6), rgba(0, 243, 255, 0.3));
+            color: #ffffff;
+            border-color: var(--arcane-cyan);
+            box-shadow: 0 0 20px var(--arcane-cyan-glow);
+            text-shadow: 0 0 5px #fff;
+        }
+
+        /* 控制選項 */
+        .magic-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spell-input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(5, 10, 25, 0.7);
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            flex-wrap: wrap;
+        }
+
+        .spell-input-group label {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .magic-number {
+            width: 75px;
+            background: #030712;
+            border: 1.5px solid var(--arcane-cyan);
+            border-radius: 8px;
+            color: var(--arcane-cyan);
+            font-size: 1.25rem;
+            padding: 6px;
+            text-align: center;
+            font-weight: bold;
+            outline: none;
+            box-shadow: inset 0 0 8px rgba(0,243,255,0.2);
+        }
+
+        .magic-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--arcane-purple);
+            cursor: pointer;
+        }
+
+        /* 奧術召喚陣大按鈕 */
+        .wand-trigger {
+            background: linear-gradient(135deg, #bc13fe 0%, #7928ca 50%, #4c1d95 100%);
+            color: #ffffff;
+            font-size: 1.35rem;
+            font-weight: bold;
+            padding: 16px 20px;
+            border: 1.5px solid var(--arcane-cyan);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 20px var(--arcane-purple-glow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wand-trigger:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px var(--arcane-cyan-glow), 0 0 15px var(--arcane-purple-glow);
+            border-color: #fff;
+        }
+
+        .wand-trigger:active {
+            transform: scale(0.98);
+        }
+
+        /* 召喚陣靈魂核心 (舞台) */
+        .summoning-stage {
+            background: radial-gradient(circle, rgba(20, 30, 65, 0.9) 0%, rgba(5, 8, 20, 0.95) 100%);
+            border: 1.5px solid var(--arcane-cyan);
+            border-radius: 14px;
+            min-height: 320px;
+            padding: 25px;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            box-shadow: inset 0 0 40px rgba(0, 243, 255, 0.15);
+            overflow: hidden;
+        }
+
+        /* 旋轉符文陣 SVG 動畫 */
+        .circle-graphic {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            opacity: 0.25;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .circle-graphic.active {
+            opacity: 0.85;
+            filter: drop-shadow(0 0 12px var(--arcane-cyan));
+            animation: spinFast 1.2s linear infinite;
+        }
+
+        .circle-graphic .outer-ring {
+            transform-origin: center;
+            animation: rotateCW 25s linear infinite;
+        }
+
+        .circle-graphic .inner-ring {
+            transform-origin: center;
+            animation: rotateCCW 18s linear infinite;
+        }
+
+        @keyframes rotateCW { 100% { transform: rotate(360deg); } }
+        @keyframes rotateCCW { 100% { transform: rotate(-360deg); } }
+        @keyframes spinFast { 100% { transform: rotate(720deg); } }
+
+        .stage-hint {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .destiny-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 15px;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* 被命運召喚的英雄卡片 */
+        .hero-card {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.15), rgba(188, 19, 254, 0.2));
+            border: 2px solid var(--arcane-cyan);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px var(--arcane-cyan-glow), inset 0 0 15px rgba(0, 243, 255, 0.3);
+            animation: summonHero 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 180px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-title {
+            font-size: 0.85rem;
+            color: var(--arcane-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 6px var(--arcane-gold-glow);
+        }
+
+        .hero-name {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--arcane-cyan);
+            letter-spacing: 1px;
+        }
+
+        @keyframes summonHero {
+            0% { transform: scale(0.2) translateY(50px); opacity: 0; filter: blur(10px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
+        }
+
+        .mana-pool-info {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* 新增成員 */
+        .summon-newcomer-zone {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            background: rgba(5, 10, 25, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .newcomer-input {
+            flex: 1;
+            background: #030712;
+            border: 1px solid var(--arcane-cyan);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 8px 12px;
+            outline: none;
+        }
+
+        .newcomer-input:focus {
+            box-shadow: 0 0 10px var(--arcane-cyan-glow);
+        }
+
+        .btn-summon-newcomer {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            border: 1px solid var(--arcane-cyan);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-summon-newcomer:hover {
+            box-shadow: 0 0 12px var(--arcane-cyan-glow);
+        }
+
+        /* 魔法使者名冊表格 */
+        .parchment-scroll {
+            background: rgba(5, 10, 25, 0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .magic-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .magic-table th {
+            background-color: rgba(10, 20, 45, 0.95);
+            color: var(--arcane-cyan);
+            padding: 14px 12px;
+            font-size: 1.05rem;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            border-bottom: 2px solid var(--arcane-cyan);
+            text-shadow: 0 0 6px var(--arcane-cyan-glow);
+        }
+
+        .magic-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            font-size: 1.1rem;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .magic-table tr:hover {
+            background: rgba(0, 243, 255, 0.05);
+        }
+
+        .magic-table tr.absent-row {
+            background: rgba(255, 0, 80, 0.08) !important;
+            color: #64748b !important;
+        }
+
+        .spell-input-name {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #ffffff;
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            width: 110px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .spell-input-name:focus {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: var(--arcane-cyan);
+            outline: none;
+            box-shadow: 0 0 8px var(--arcane-cyan-glow);
+        }
+
+        /* 能量計分 */
+        .score-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            background: rgba(3, 7, 18, 0.8);
+            border-radius: 30px;
+            padding: 2px 6px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .mana-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mana-plus {
+            background-color: #0284c7;
+            color: #ffffff;
+        }
+        .mana-plus:hover {
+            background-color: #0369a1;
+            box-shadow: 0 0 8px var(--arcane-cyan);
+        }
+
+        .mana-minus {
+            background-color: #be123c;
+            color: #ffffff;
+        }
+        .mana-minus:hover {
+            background-color: #9f1239;
+        }
+
+        .mana-val {
+            display: inline-block;
+            width: 42px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .mana-val.positive {
+            color: var(--arcane-cyan);
+            text-shadow: 0 0 8px var(--arcane-cyan-glow);
+        }
+
+        .mana-val.negative {
+            color: #ff5555;
+        }
+
+        /* 結算作業 */
+        .summary-wrapper {
+            grid-column: 1 / -1;
+            margin-top: 10px;
+        }
+
+        /* 羊皮紙結算書 (適合拍照) */
+        .scroll-container {
+            background-color: var(--scroll-bg);
+            background-image: radial-gradient(circle, rgba(210,180,140,0.15) 0%, rgba(139,69,19,0.2) 100%);
+            border: 8px double #6b3e13;
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 0 50px rgba(139,69,19,0.3);
+            padding: 35px;
+            margin-top: 25px;
+            color: var(--scroll-text);
+            display: none;
+            position: relative;
+        }
+
+        .scroll-container::before {
+            content: "🌀";
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2.5rem;
+            opacity: 0.7;
+        }
+
+        .scroll-header {
+            text-align: center;
+            border-bottom: 2px dashed #6b3e13;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .scroll-header h1 {
+            font-size: 2.2rem;
+            font-family: "Noto Serif TC", serif;
+            color: #4a2711;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+            margin-bottom: 5px;
+        }
+
+        .scroll-header p {
+            font-size: 1.1rem;
+            color: #5c4033;
+            font-weight: bold;
+        }
+
+        .scroll-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+            gap: 15px;
+        }
+
+        .scroll-item {
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            padding: 12px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.25rem;
+            background: rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+        }
+
+        .scroll-item.has-mana {
+            background: rgba(255, 215, 0, 0.3);
+            border: 1.5px solid #8b6508;
+            box-shadow: inset 0 0 6px rgba(255, 215, 0, 0.4);
+        }
+
+        .scroll-item.absent {
+            background: rgba(0, 0, 0, 0.05);
+            color: #8c7d70;
+            border-style: dashed;
+        }
+
+        .scroll-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* 專屬按鈕 */
+        .btn-magic {
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-wand-style {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            border-color: var(--arcane-cyan);
+        }
+        .btn-wand-style:hover {
+            box-shadow: 0 0 18px var(--arcane-cyan-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-save-style {
+            background: linear-gradient(135deg, #7c2d12 0%, #451a03 100%);
+            color: #fef08a;
+            border-color: #fde047;
+        }
+        .btn-save-style:hover {
+            box-shadow: 0 5px 15px rgba(124, 45, 18, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-reset-style {
+            background: rgba(255, 0, 80, 0.1);
+            color: #ff66aa;
+            border-color: #ff0055;
+            padding: 6px 15px;
+            font-size: 0.9rem;
+        }
+        .btn-reset-style:hover {
+            background: rgba(255, 0, 80, 0.25);
+        }
+
+        /* 魔法彈窗 */
+        .magic-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 7, 20, 0.88);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-content {
+            background: #0b132b;
+            border: 2px solid var(--arcane-cyan);
+            border-radius: 14px;
+            padding: 30px;
+            max-width: 460px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px var(--arcane-cyan-glow);
+            position: relative;
+        }
+
+        .modal-content h3 {
+            color: var(--arcane-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px var(--arcane-cyan-glow);
+        }
+
+        .modal-content p {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌀 翠翠小精靈的奧術召喚陣</h1>
+        <p>「星核共振，符文點亮，見證召喚契約的誕生。」</p>
+    </header>
+
+    <div class="container">
+        <!-- 頂部班級切換：全寬 -->
+        <div class="portal-zone" id="portalZone"></div>
+
+        <!-- 左側面板：奧術召喚台 -->
+        <div class="magic-card magic-controls">
+            <h2>🔮 奧術召喚控制台 (<span id="titleClass">114班</span>)</h2>
+            
+            <div class="spell-input-group">
+                <label>
+                    召喚名額：
+                    <input type="number" id="drawCount" class="magic-number" value="1" min="1" max="30">
+                </label>
+                
+                <label style="margin-left: auto;">
+                    <input type="checkbox" id="allowRepeat" class="magic-checkbox">
+                    容許重置放回 (重複抽籤)
+                </label>
+            </div>
+
+            <button class="wand-trigger" id="btnWand">
+                ✨ 啟動奧術召喚儀式
+            </button>
+
+            <div class="mana-pool-info" id="manaPoolText">
+                星核魔能充盈中...
+            </div>
+
+            <!-- 奧術召喚舞台 -->
+            <div class="summoning-stage" id="prophecyStage">
+                <!-- 旋轉符文 SVG 魔法陣 -->
+                <svg class="circle-graphic" id="magicCircleGraphic" viewBox="0 0 200 200">
+                    <g class="outer-ring">
+                        <circle cx="100" cy="100" r="92" fill="none" stroke="#00f3ff" stroke-width="1.5" stroke-dasharray="6,4"/>
+                        <circle cx="100" cy="100" r="84" fill="none" stroke="#bc13fe" stroke-width="1"/>
+                        <polygon points="100,10 178,145 22,145" fill="none" stroke="#00f3ff" stroke-width="0.8"/>
+                        <polygon points="100,190 22,55 178,55" fill="none" stroke="#00f3ff" stroke-width="0.8"/>
+                    </g>
+                    <g class="inner-ring">
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="8,6"/>
+                        <rect x="58" y="58" width="84" height="84" fill="none" stroke="#bc13fe" stroke-width="1" transform="rotate(45 100 100)"/>
+                    </g>
+                    <circle cx="100" cy="100" r="20" fill="none" stroke="#00f3ff" stroke-width="2"/>
+                </svg>
+
+                <div class="stage-hint" id="stageStatus">等待召喚儀式啟動，宿命英雄即將降臨</div>
+                <div class="destiny-names" id="stageNames"></div>
+            </div>
+
+            <div style="text-align: right;">
+                <button class="btn-magic btn-reset-style" id="btnResetPool">
+                    🔄 重置召喚池 (手動清空抽籤池)
+                </button>
+            </div>
+        </div>
+
+        <!-- 右側面板：班級大名冊 -->
+        <div class="magic-card" style="display: flex; flex-direction: column;">
+            <h2>📜 魔法使者名冊與加成 (<span id="studentCount">0</span>人)</h2>
+            
+            <!-- 臨時新加入學生輸入區 -->
+            <div class="summon-newcomer-zone">
+                <input type="text" id="newStudentName" class="newcomer-input" placeholder="輸入新魔法使者姓名...">
+                <button class="btn-summon-newcomer" id="btnAddStudent">✨ 召喚新成員</button>
+            </div>
+            
+            <div class="parchment-scroll">
+                <table class="magic-table">
+                    <thead>
+                        <tr>
+                            <th width="15%">序號</th>
+                            <th width="35%">魔法使者名諱</th>
+                            <th width="15%">缺席</th>
+                            <th width="35%">星核魔能</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rosterBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 底部結算：全寬 -->
+        <div class="magic-card summary-wrapper">
+            <h2>🏁 課堂奧術大結算</h2>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">
+                課程結束之時，請點擊下方按鈕，召喚高對比、超清晰的「奧術召喚契約書」。方便您使用手機直接照相，或一鍵將結果下載為紀錄檔案 (.CSV)。
+            </p>
+            <button class="btn-magic btn-wand-style" id="btnSummary">
+                📊 召喚奧術召喚契約書
+            </button>
+
+            <!-- 羊皮紙卷軸 (適合手機照相) -->
+            <div class="scroll-container" id="scrollContainer">
+                <div class="scroll-header">
+                    <h1 id="scrollTitle">114班 - 課堂奧術記分</h1>
+                    <p id="scrollTime">日期：-- / -- / --</p>
+                </div>
+                <div class="scroll-grid" id="scrollGrid"></div>
+                
+                <div class="scroll-actions">
+                    <button class="btn-magic btn-save-style" id="btnSave">
+                        💾 存檔 (下載 CSV 紀錄檔)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自訂魔法彈窗 -->
+    <div class="magic-modal" id="magicModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">🔮 陣法密語</h3>
+            <p id="modalBody">奧術陣法發出了神祕的光芒。</p>
+            <button class="btn-magic btn-wand-style" id="btnModalClose" style="padding: 8px 25px; font-size:1rem;">遵命</button>
+        </div>
+    </div>
+
+    <script>
+        // 114班、201班、208班 完整學生名冊
+        const rawClassData = {
+            "114班": [
+                { num: 1, name: "尤辰祐" },
+                { num: 2, name: "石濬銘" },
+                { num: 3, name: "高翊翔" },
+                { num: 4, name: "張恆睿" },
+                { num: 5, name: "張祐銓" },
+                { num: 6, name: "張賀竣" },
+                { num: 7, name: "許彧墉" },
+                { num: 8, name: "許鎛麟" },
+                { num: 9, name: "郭柏辰" },
+                { num: 10, name: "曾琮恩" },
+                { num: 11, name: "黃弈睿" },
+                { num: 12, name: "黃琮祐" },
+                { num: 13, name: "廖翊倫" },
+                { num: 14, name: "蘇冠霖" },
+                { num: 15, name: "吳怡縈" },
+                { num: 16, name: "李宜庭" },
+                { num: 17, name: "周品妘" },
+                { num: 18, name: "林宥甄" },
+                { num: 19, name: "邱黃汝恩" },
+                { num: 20, name: "倪筱涵" },
+                { num: 21, name: "張家綺" },
+                { num: 22, name: "張簡佩岑" },
+                { num: 23, name: "黃子庭" },
+                { num: 24, name: "黃姵蓉" },
+                { num: 25, name: "黃紫晨" },
+                { num: 26, name: "葉孟帆" }
+            ],
+            "201班": [
+                { num: 1, name: "史杰恩" },
+                { num: 2, name: "李培德" },
+                { num: 3, name: "岳宗進" },
+                { num: 4, name: "林佑昕" },
+                { num: 5, name: "孫堂恩" },
+                { num: 6, name: "翁炘緯" },
+                { num: 7, name: "郭品昊" },
+                { num: 8, name: "陳世志" },
+                { num: 9, name: "陳奕瑋" },
+                { num: 10, name: "黃泓睿" },
+                { num: 11, name: "黃柏諺" },
+                { num: 12, name: "黃洧晟" },
+                { num: 13, name: "楊詠傑" },
+                { num: 14, name: "葉恩旭" },
+                { num: 15, name: "潘博均" },
+                { num: 16, name: "王翊庭" },
+                { num: 17, name: "李羽涵" },
+                { num: 18, name: "李品緁" },
+                { num: 19, name: "岳忻誼" },
+                { num: 20, name: "林汶葶" },
+                { num: 21, name: "林裔緁" },
+                { num: 22, name: "柯昕汝" },
+                { num: 23, name: "張云馨" },
+                { num: 24, name: "黃田橞" },
+                { num: 25, name: "劉羽婕" },
+                { num: 26, name: "盧湘甯" },
+                { num: 27, name: "賴樂恩" },
+                { num: 28, name: "簡妘恩" },
+                { num: 29, name: "魏慧子" },
+                { num: 30, name: "孫慈君" }
+            ],
+            "208班": [
+                { num: 1, name: "王君霖" },
+                { num: 2, name: "吳政憲" },
+                { num: 3, name: "李秉憶" },
+                { num: 4, name: "周冠昇" },
+                { num: 5, name: "周煒盛" },
+                { num: 6, name: "林琮智" },
+                { num: 7, name: "張簡琨泰" },
+                { num: 8, name: "陳奕碩" },
+                { num: 9, name: "陳瑋哲" },
+                { num: 10, name: "黃宇頡" },
+                { num: 11, name: "黃家俞" },
+                { num: 12, name: "黃梓傑" },
+                { num: 13, name: "黃勢陞" },
+                { num: 14, name: "黃寶賢" },
+                { num: 15, name: "廖永霖" },
+                { num: 16, name: "吳侑庭" },
+                { num: 17, name: "周子琳" },
+                { num: 18, name: "林辰霏" },
+                { num: 19, name: "林亭妏" },
+                { num: 20, name: "洪睿妍" },
+                { num: 21, name: "許心晴" },
+                { num: 22, name: "郭紜齊" },
+                { num: 23, name: "陳靖勻" },
+                { num: 24, name: "陳慧鎂" },
+                { num: 26, name: "黃湉媗" },
+                { num: 27, name: "黃琬筑" },
+                { num: 28, name: "黃燕諭" },
+                { num: 29, name: "蔣采楨" },
+                { num: 30, name: "顏瑀蓵" },
+                { num: 31, name: "謝雨珊" }
+            ]
+        };
+
+        let rosterDb = {};
+        let currentActiveGroup = "114班";
+        let spellDrawPool = [];
+
+        // 音訊合成器 (Web Audio API)
+        let audioCtx = null;
+        function playSummonSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                
+                const now = audioCtx.currentTime;
+                // 召喚陣爬升和弦
+                const notes = [440, 554.37, 659.25, 880, 1108.73, 1318.51];
+                
+                notes.forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freq, now + (index * 0.06));
+                    
+                    gain.gain.setValueAtTime(0.12, now + (index * 0.06));
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + (index * 0.06) + 0.35);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(now + (index * 0.06));
+                    osc.stop(now + (index * 0.06) + 0.35);
+                });
+            } catch(e) {
+                // Ignore audio context errors
+            }
+        }
+
+        function showMagicAlert(title, message) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = message;
+            document.getElementById('magicModal').style.display = 'flex';
+        }
+
+        function initializeWandSystem() {
+            rosterDb = {};
+            for (let cls in rawClassData) {
+                rosterDb[cls] = rawClassData[cls].map(student => ({
+                    num: student.num,
+                    name: student.name,
+                    isAbsent: false,
+                    manaValue: 0
+                }));
+            }
+        }
+
+        function buildPortalButtons() {
+            const portalZone = document.getElementById('portalZone');
+            portalZone.innerHTML = '';
+            
+            for (let cls in rosterDb) {
+                const btn = document.createElement('button');
+                btn.className = `portal-btn ${cls === currentActiveGroup ? 'active' : ''}`;
+                btn.innerText = `🌀 ${cls} 召喚門`;
+                
+                btn.addEventListener('click', function() {
+                    switchActiveGroup(cls);
+                });
+                
+                portalZone.appendChild(btn);
+            }
+        }
+
+        function switchActiveGroup(groupName) {
+            currentActiveGroup = groupName;
+            
+            const btns = document.querySelectorAll('.portal-btn');
+            btns.forEach(b => {
+                if (b.innerText.includes(groupName)) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+
+            document.getElementById('titleClass').innerText = groupName;
+            document.getElementById('scrollContainer').style.display = 'none';
+            document.getElementById('newStudentName').value = '';
+
+            renderMagicRoster();
+            rechargeSpellPool();
+            resetStage();
+        }
+
+        function renderMagicRoster() {
+            const students = rosterDb[currentActiveGroup];
+            document.getElementById('studentCount').innerText = students.length;
+
+            const tbody = document.getElementById('rosterBody');
+            tbody.innerHTML = '';
+
+            students.forEach((student) => {
+                const tr = document.createElement('tr');
+                if (student.isAbsent) {
+                    tr.className = 'absent-row';
+                }
+
+                // 序號
+                const tdNum = document.createElement('td');
+                tdNum.innerText = student.num;
+                tr.appendChild(tdNum);
+
+                // 姓名
+                const tdName = document.createElement('td');
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.className = 'spell-input-name';
+                nameInput.value = student.name;
+                nameInput.addEventListener('change', function() {
+                    student.name = this.value.trim();
+                });
+                tdName.appendChild(nameInput);
+                tr.appendChild(tdName);
+
+                // 缺席
+                const tdAbsent = document.createElement('td');
+                const checkAbsent = document.createElement('input');
+                checkAbsent.type = 'checkbox';
+                checkAbsent.className = 'magic-checkbox';
+                checkAbsent.checked = student.isAbsent;
+                checkAbsent.addEventListener('change', function() {
+                    student.isAbsent = this.checked;
+                    renderMagicRoster();
+                    rechargeSpellPool();
+                });
+                tdAbsent.appendChild(checkAbsent);
+                tr.appendChild(tdAbsent);
+
+                // 星核魔能 (+ / -)
+                const tdScore = document.createElement('td');
+                const scoreCapsule = document.createElement('div');
+                scoreCapsule.className = 'score-capsule';
+
+                const btnMinus = document.createElement('button');
+                btnMinus.className = 'mana-btn mana-minus';
+                btnMinus.innerText = '-';
+                btnMinus.addEventListener('click', function() {
+                    student.manaValue--;
+                    manaLabel.innerText = getScoreString(student.manaValue);
+                    setManaClass(manaLabel, student.manaValue);
+                });
+
+                const manaLabel = document.createElement('span');
+                manaLabel.className = 'mana-val';
+                manaLabel.innerText = getScoreString(student.manaValue);
+                setManaClass(manaLabel, student.manaValue);
+
+                const btnPlus = document.createElement('button');
+                btnPlus.className = 'mana-btn mana-plus';
+                btnPlus.innerText = '+';
+                btnPlus.addEventListener('click', function() {
+                    student.manaValue++;
+                    manaLabel.innerText = getScoreString(student.manaValue);
+                    setManaClass(manaLabel, student.manaValue);
+                });
+
+                scoreCapsule.appendChild(btnMinus);
+                scoreCapsule.appendChild(manaLabel);
+                scoreCapsule.appendChild(btnPlus);
+                tdScore.appendChild(scoreCapsule);
+                tr.appendChild(tdScore);
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function getScoreString(val) {
+            if (val > 0) return `+${val}`;
+            return `${val}`;
+        }
+
+        function setManaClass(element, val) {
+            element.className = 'mana-val';
+            if (val > 0) element.classList.add('positive');
+            if (val < 0) element.classList.add('negative');
+        }
+
+        function rechargeSpellPool() {
+            const students = rosterDb[currentActiveGroup];
+            spellDrawPool = [];
+            students.forEach((std, index) => {
+                if (!std.isAbsent) {
+                    spellDrawPool.push(index);
+                }
+            });
+            
+            const countInput = document.getElementById('drawCount');
+            const activeCount = spellDrawPool.length;
+            
+            countInput.max = activeCount > 0 ? activeCount : 1;
+            
+            if (parseInt(countInput.value) > activeCount) {
+                countInput.value = activeCount > 0 ? activeCount : 1;
+            } else if (parseInt(countInput.value) <= 0 && activeCount > 0) {
+                countInput.value = 1;
+            }
+            
+            updatePoolText();
+        }
+
+        function updatePoolText() {
+            const allowRepeat = document.getElementById('allowRepeat').checked;
+            const textEl = document.getElementById('manaPoolText');
+            if (allowRepeat) {
+                textEl.innerHTML = `🔮 陣法狀態：<strong>重複召喚模式</strong> (全班在線：${spellDrawPool.length} 人)`;
+            } else {
+                textEl.innerHTML = `🔮 目前召喚池內未出陣名額：<strong>${spellDrawPool.length}</strong> 人`;
+            }
+        }
+
+        function resetStage() {
+            document.getElementById('stageStatus').innerText = "等待召喚儀式啟動，宿命英雄即將降臨";
+            document.getElementById('stageNames').innerHTML = "";
+            document.getElementById('magicCircleGraphic').classList.remove('active');
+        }
+
+        document.getElementById('btnWand').addEventListener('click', function() {
+            const countInput = document.getElementById('drawCount');
+            let count = parseInt(countInput.value) || 1;
+            const allowRepeat = document.getElementById('allowRepeat').checked;
+            const students = rosterDb[currentActiveGroup];
+
+            const activeStudents = students.filter(s => !s.isAbsent);
+            if (activeStudents.length === 0) {
+                showMagicAlert("🔮 陣法無法感應", "此班級全員皆處於缺席/封印狀態，無法啟動召喚陣！");
+                return;
+            }
+
+            if (count > activeStudents.length) {
+                showMagicAlert("🔮 能量超出上限", `設定召喚名額 (${count} 人) 大於當前在線人數 (${activeStudents.length} 人)，已自動調為最大名額。`);
+                count = activeStudents.length;
+                countInput.value = count;
+            }
+
+            if (!allowRepeat && spellDrawPool.length < count) {
+                showMagicAlert("🔮 召喚池耗盡", `池中剩餘人數 (${spellDrawPool.length}人) 不足供您召喚 ${count} 人。請重置召喚池！`);
+                return;
+            }
+
+            playSummonSound();
+
+            const circleGraphic = document.getElementById('magicCircleGraphic');
+            circleGraphic.classList.add('active');
+
+            let elapsed = 0;
+            const duration = 1200;
+            const interval = 60;
+            
+            document.getElementById('stageStatus').innerText = "⚡ 奧術陣法高速旋轉，英雄呼應中... ⚡";
+            
+            const timer = setInterval(() => {
+                const tempArr = [];
+                for (let i = 0; i < count; i++) {
+                    const randomS = activeStudents[Math.floor(Math.random() * activeStudents.length)];
+                    tempArr.push(randomS.name);
+                }
+                
+                document.getElementById('stageNames').innerHTML = tempArr.map(n => {
+                    return `<div class="hero-card" style="opacity: 0.7; transform: scale(0.95);">
+                        <div class="hero-title">星能凝聚中</div>
+                        <div class="hero-name">${n}</div>
+                    </div>`;
+                }).join('');
+                
+                elapsed += interval;
+            }, interval);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                circleGraphic.classList.remove('active');
+                
+                let chosenIndices = [];
+
+                if (allowRepeat) {
+                    let currentAvailable = [...spellDrawPool];
+                    for (let i = 0; i < count; i++) {
+                        const rIdx = Math.floor(Math.random() * currentAvailable.length);
+                        chosenIndices.push(currentAvailable.splice(rIdx, 1)[0]);
+                    }
+                } else {
+                    for (let i = 0; i < count; i++) {
+                        const rIdx = Math.floor(Math.random() * spellDrawPool.length);
+                        chosenIndices.push(spellDrawPool.splice(rIdx, 1)[0]);
+                    }
+                    updatePoolText();
+                }
+
+                document.getElementById('stageStatus').innerText = "🏆 召喚結果：";
+                document.getElementById('stageNames').innerHTML = chosenIndices.map(idx => {
+                    return `<div class="hero-card">
+                        <div class="hero-name">${students[idx].num}號 ${students[idx].name}</div>
+                    </div>`;
+                }).join('');
+
+                if (!allowRepeat && spellDrawPool.length === 0) {
+                    setTimeout(() => {
+                        showMagicAlert("🔔 陣法輪迴完畢", "全班所有在線魔法使者皆已被召喚完畢！即將自動重置召喚池。");
+                        rechargeSpellPool();
+                    }, 500);
+                }
+
+            }, duration);
+        });
+
+        function addNewStudent() {
+            const inputEl = document.getElementById('newStudentName');
+            const name = inputEl.value.trim();
+            if (!name) {
+                showMagicAlert("🔮 召喚失敗", "請先輸入新魔法使者的姓名！");
+                return;
+            }
+
+            const students = rosterDb[currentActiveGroup];
+            const nextNum = students.length > 0 ? Math.max(...students.map(s => s.num)) + 1 : 1;
+
+            students.push({
+                num: nextNum,
+                name: name,
+                isAbsent: false,
+                manaValue: 0
+            });
+
+            inputEl.value = '';
+            renderMagicRoster();
+            rechargeSpellPool();
+            
+            const scrollArea = document.querySelector('.parchment-scroll');
+            scrollArea.scrollTop = scrollArea.scrollHeight;
+
+            showMagicAlert("✨ 迎新契約", `已將新魔法使者「${name}」簽署至 ${currentActiveGroup}！\n(座號：${nextNum})`);
+        }
+
+        document.getElementById('btnAddStudent').addEventListener('click', addNewStudent);
+        document.getElementById('newStudentName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addNewStudent();
+            }
+        });
+
+        document.getElementById('btnResetPool').addEventListener('click', function() {
+            rechargeSpellPool();
+            showMagicAlert("🔮 陣法充能", "召喚池已重新充能完畢！所有魔法使者回歸陣中。");
+        });
+
+        document.getElementById('allowRepeat').addEventListener('change', function() {
+            rechargeSpellPool();
+        });
+
+        document.getElementById('btnModalClose').addEventListener('click', function() {
+            document.getElementById('magicModal').style.display = 'none';
+        });
+
+        // 生成「奧術召喚契約書」
+        document.getElementById('btnSummary').addEventListener('click', function() {
+            const scrollContainer = document.getElementById('scrollContainer');
+            const scrollGrid = document.getElementById('scrollGrid');
+            const now = new Date();
+            
+            const formatTime = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            document.getElementById('scrollTitle').innerText = `✨ ${currentActiveGroup} - 奧術召喚契約書`;
+            document.getElementById('scrollTime').innerText = `紀元時間：${formatTime}`;
+
+            scrollGrid.innerHTML = '';
+            const students = rosterDb[currentActiveGroup];
+
+            students.forEach(s => {
+                const item = document.createElement('div');
+                
+                let scText = "0";
+                if (s.manaValue > 0) {
+                    scText = `+${s.manaValue}`;
+                    item.className = 'scroll-item has-mana';
+                } else if (s.manaValue < 0) {
+                    scText = `${s.manaValue}`;
+                    item.className = 'scroll-item has-mana';
+                } else {
+                    item.className = 'scroll-item';
+                }
+
+                if (s.isAbsent) {
+                    item.className = 'scroll-item absent';
+                    item.innerHTML = `<span>${s.num}. <s>${s.name}</s></span> <span style="font-size:0.95rem;">封印</span>`;
+                } else {
+                    item.innerHTML = `<span>${s.num}. ${s.name}</span> <span>${scText}</span>`;
+                }
+                
+                scrollGrid.appendChild(item);
+            });
+
+            scrollContainer.style.display = 'block';
+            scrollContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 下載 CSV
+        document.getElementById('btnSave').addEventListener('click', function() {
+            const students = rosterDb[currentActiveGroup];
+            const now = new Date();
+            
+            const fileDate = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+
+            let csvData = "\uFEFF";
+            csvData += "座號,魔法使者姓名,出勤狀態,星核魔能\n";
+
+            students.forEach(s => {
+                const status = s.isAbsent ? "缺席" : "出席";
+                csvData += `${s.num},${s.name},${status},${s.manaValue}\n`;
+            });
+
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", `${currentActiveGroup}_${fileDate}_奧術召喚紀錄.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // 系統初始化
+        initializeWandSystem();
+        buildPortalButtons();
+        switchActiveGroup("114班");
+    </script>
+</body>
+</html>
